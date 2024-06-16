@@ -36,6 +36,9 @@
 #reboot to test
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
+#custom button function to start logging script
+#custom buttom function long press to safe shutdown
+#script to on boot git pull latest code from github
 
 import time
 import board
