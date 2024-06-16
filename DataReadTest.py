@@ -32,7 +32,10 @@
 # EOF
 #save the file and make it executable with:
 # chmod +X ~/scripts/autopair
-
+# make scripts/updateSkate and made executable too
+# #!/bin/bash
+#cd ~/SkatePushDetection
+#git pull
 #reboot to test
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
