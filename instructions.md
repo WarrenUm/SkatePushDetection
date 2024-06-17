@@ -52,7 +52,7 @@ Description=auto updates skate scripts from GitHub
 After=multi-user.target
 Requires=network.target
 [Service]
-Type=idle
+Type=oneshot
 User=skate
 ExecStart=/usr/bin/bash /home/skate/scripts/updateSkate
 [Install]
