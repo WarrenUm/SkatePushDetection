@@ -48,7 +48,7 @@ Then reboot
 Check status with sudo systemctl status autoupdate.service
 
 ```[Unit]
-Description=auto updates skate scripts from GitHub
+Description=Pulls Changes from GitHub
 After=multi-user.target
 Requires=network.target
 [Service]
