@@ -33,9 +33,10 @@
 #save the file and make it executable with:
 # chmod +X ~/scripts/autopair
 # make scripts/updateSkate and made executable too
-# #!/bin/bash
-#cd ~/SkatePushDetection
-#git pull
+#!/bin/bash
+cd  ~/SkatePushDetection
+git pull
+
 
 #setup systemd to handle autostart scripts
 create a systemd service with sudo nano /etc/systemd/system/autoupdate.service
@@ -52,7 +53,7 @@ Description=Pulls Changes from GitHub
 After=multi-user.target
 Requires=network.target
 [Service]
-Type=simple
+Type=oneshot
 User=skate
 ExecStart=/usr/bin/bash /home/skate/scripts/updateSkate
 [Install]
