@@ -47,6 +47,19 @@ sudo systemctl enable name-of-your-service.service
 Then reboot
 Check status with sudo systemctl status autoupdate.service
 
+```[Unit]
+Description=auto updates skate scripts from GitHub
+After=multi-user.target
+Requires=network.target
+[Service]
+Type=idle
+User=skate
+ExecStart=/usr/bin/bash /home/skate/scripts/updateSkate
+[Install]
+WantedBy=multi-user.target
+```
+
+
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
 #custom button function to start logging script
