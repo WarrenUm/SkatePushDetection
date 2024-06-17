@@ -38,7 +38,14 @@
 #git pull
 
 #setup systemd to handle autostart scripts
+create a systemd service with sudo nano /etc/systemd/system/autoupdate.service
 
+change permissions sudo chmod 644 /etc/systemd/system/name-of-your-service.service
+reload systemctl and enable the service
+sudo systemctl daemon-reload
+sudo systemctl enable name-of-your-service.service
+Then reboot
+Check status with sudo systemctl status autoupdate.service
 
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
