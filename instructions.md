@@ -52,7 +52,7 @@ Description=Pulls Changes from GitHub
 After=multi-user.target
 Requires=network.target
 [Service]
-Type=oneshot
+Type=simple
 User=skate
 ExecStart=/usr/bin/bash /home/skate/scripts/updateSkate
 [Install]
