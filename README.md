@@ -20,6 +20,29 @@ Install Adafruit-Blinka and adafruit-circuitpython-adxl345x:
 ```pip3 install Adafruit-Blinka```
 ```pip3 install adafruit-circuitpython-adxl34x```
 
+Edit .bashrc and add:
+```
+function cd() {
+  builtin cd "$@"
+
+  if [[ -z "$VIRTUAL_ENV" ]] ; then
+    ## If env folder is found then activate the vitualenv
+      if [[ -d ./.env ]] ; then
+        source ./.env/bin/activate
+      fi
+  else
+    ## check the current folder belong to earlier VIRTUAL_ENV folder
+    # if yes then do nothing
+    # else deactivate
+      parentdir="$(dirname "$VIRTUAL_ENV")"
+      if [[ "$PWD"/ != "$parentdir"/* ]] ; then
+        deactivate
+      fi
+  fi
+}
+```
+This will activate the venv when moving to the skate directory
+
 Next, make sure that I2C is enabled by running:
 ```sudo raspi-config nonint do_i2c 0```
 
