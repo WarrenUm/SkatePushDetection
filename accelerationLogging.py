@@ -98,8 +98,10 @@ while True:
 
     if not buttonToggleBacklight.value and Backlight.value == True:
         Backlight.value = False  # turn off backlight
+        time.sleep(0.5)
     elif not buttonToggleBacklight.value and Backlight.value == False:
         Backlight.value = True  # turn on backlight
+        time.sleep(0.5)
 
     if not buttonToggleBacklight and buttonStartNewLog.value:  # just button A pressed
         showCreatingNewLog()
