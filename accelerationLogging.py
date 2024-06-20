@@ -73,6 +73,7 @@ def showCreatingNewLog():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     y = top
     draw.text((x, y), text, font=font, fill="#FFFFFF")
+    time.sleep(5)
 
 
 
@@ -95,9 +96,9 @@ start = time.monotonic()
 print(f'Start Time: {start}\n')
 while True:
 
-    if buttonToggleBacklight.value and Backlight.value == True:
-            Backlight.value = False  # turn off backlight
-    elif buttonToggleBacklight.value and Backlight.value == False:
+    if not buttonToggleBacklight.value and Backlight.value == True:
+        Backlight.value = False  # turn off backlight
+    elif not buttonToggleBacklight.value and Backlight.value == False:
         Backlight.value = True  # turn on backlight
 
     if not buttonToggleBacklight and buttonStartNewLog.value:  # just button A pressed
