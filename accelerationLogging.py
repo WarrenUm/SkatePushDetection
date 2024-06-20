@@ -103,7 +103,7 @@ while True:
         Backlight.value = True  # turn on backlight
         time.sleep(0.5)
 
-    if not buttonToggleBacklight and buttonStartNewLog.value:  # just button A pressed
+    if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         showCreatingNewLog()
         fileName = createLogFile()
         file = open(fileName, 'a')
