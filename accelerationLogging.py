@@ -2,10 +2,11 @@ import time
 import os
 import board
 import adafruit_adxl34x
+from adafruit_adxl34x import Range
 
 i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
-accelerometer.setRange(ADXL345_RANGE_4_G)
+accelerometer.range = Range.RANGE_4_G
 
 fileCount=0
 def createLogFile(fileCount=0):
