@@ -5,6 +5,7 @@ import adafruit_adxl34x
 
 i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
+accelerometer.setRange(ADXL345_RANGE_4_G)
 
 fileCount=0
 def createLogFile(fileCount=0):
