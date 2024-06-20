@@ -93,13 +93,13 @@ while True:
     # Write four lines of text.
     y = top
     draw.text((x, y), IP, font=font, fill="#FFFFFF")
-    y += font.getbbox(IP)[1]
+    y += font.getlength(IP)[1]
     draw.text((x, y), CPU, font=font, fill="#FFFF00")
-    y += font.getbbox(CPU)[1]
+    y += font.getlength(CPU)[1]
     draw.text((x, y), MemUsage, font=font, fill="#00FF00")
-    y += font.getbbox(MemUsage)[1]
+    y += font.getlength(MemUsage)[1]
     draw.text((x, y), Disk, font=font, fill="#0000FF")
-    y += font.getbbox(Disk)[1]
+    y += font.getlength(Disk)[1]
     draw.text((x, y), Temp, font=font, fill="#FF00FF")
 
     # Display image.
