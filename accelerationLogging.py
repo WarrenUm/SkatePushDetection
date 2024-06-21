@@ -74,9 +74,8 @@ def clearDisplay():
     y = top
     return y
 
-def drawText(textArray,y):    
-    textString = "\n".join(textArray)
-    draw.text((width/2,height/2),textString,font=font,fill=("#FFFFFF"),align="center",)
+def drawText(text,y):    
+    draw.text((width/2,height/2),text,font=font,fill=("#FFFFFF"),align="center",)
     print("displaying")
     disp.image(image, rotation)
     return y
@@ -84,18 +83,15 @@ def drawText(textArray,y):
 def newLogfile():
     y = clearDisplay()
     fileName = createLogFile(fileCount)
-    textToDraw = []
-    textToDraw += f"New Log File:\n {fileName}"
-    textToDraw += "Writing Header..."
-    y = drawText(textToDraw,y)
+    text = f"New Log File:\n {fileName}\nWriting Header...\n"
+    y = drawText(text,y)
     time.sleep(2)
     y = clearDisplay()
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
-    textToDraw = []
-    textToDraw += "Done!"
-    y = drawText(textToDraw,y)
+    text = "Done!"
+    y = drawText(text,y)
     time.sleep(2)
     y = clearDisplay()
 
