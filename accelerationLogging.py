@@ -86,7 +86,6 @@ def newLogfile():
     fileName = createLogFile(fileCount)
     text = f"New Log File:\n {fileName}"
     y = drawText(text,y)
-    time.sleep(2)
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
@@ -117,10 +116,10 @@ while True:
 
     if not buttonToggleBacklight.value and Backlight.value == True:
         Backlight.value = False  # turn off backlight
-        time.sleep(0.5)
+        time.sleep(0.1)
     elif not buttonToggleBacklight.value and Backlight.value == False:
         Backlight.value = True  # turn on backlight
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
