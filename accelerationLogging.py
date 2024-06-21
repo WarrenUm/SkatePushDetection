@@ -37,42 +37,39 @@ def createLogFile(fileCount):
     print('returning filename')
     return fileName
 
-def setupDisplay():
-    
-    cs_pin = digitalio.DigitalInOut(board.CE0)
-    dc_pin = digitalio.DigitalInOut(board.D25)
-    reset_pin = None
-    BAUDRATE = 64000000
-    spi = board.SPI()
-    disp = st7789.ST7789(
-        spi,
-        cs=cs_pin,
-        dc=dc_pin,
-        rst=reset_pin,
-        baudrate=BAUDRATE,
-        width=240,
-        height=240,
-        x_offset=0,
-        y_offset=80,
-    )
-    height = disp.width  
-    width = disp.height
-    image = Image.new("RGB", (width, height))
-    rotation = 180
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
-    disp.image(image, rotation)
-    padding = -2
-    top = padding
-    bottom = height - padding
-    x = 0
-    y = top
-    font = ImageFont.truetype("DejaVuSans.ttf", 24)
-    backlight = digitalio.DigitalInOut(board.D22)
-    backlight.switch_to_output()
-    backlight.value = True
+cs_pin = digitalio.DigitalInOut(board.CE0)
+dc_pin = digitalio.DigitalInOut(board.D25)
+reset_pin = None
+BAUDRATE = 64000000
+spi = board.SPI()
+disp = st7789.ST7789(
+    spi,
+    cs=cs_pin,
+    dc=dc_pin,
+    rst=reset_pin,
+    baudrate=BAUDRATE,
+    width=240,
+    height=240,
+    x_offset=0,
+    y_offset=80,
+)
+height = disp.width  
+width = disp.height
+image = Image.new("RGB", (width, height))
+rotation = 180
+draw = ImageDraw.Draw(image)
+draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
+disp.image(image, rotation)
+padding = -2
+top = padding
+bottom = height - padding
+x = 0
+y = top
+font = ImageFont.truetype("DejaVuSans.ttf", 24)
+backlight = digitalio.DigitalInOut(board.D22)
+backlight.switch_to_output()
+backlight.value = True
 
-setupDisplay()
 
 def clearDisplay():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
