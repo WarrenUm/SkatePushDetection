@@ -78,7 +78,7 @@ def drawText(textArray,y):
     textString = ""
     for text in textArray:
         textString += f"{text}\\n"
-    draw.multiline_text((10,10),textString,font=font,fill=(0,0,0))
+    draw.multiline_text((x,y),textString,font=font,fill=(0,0,0))
     return y
 
 def newLogfile():
