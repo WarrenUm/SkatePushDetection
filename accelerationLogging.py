@@ -9,7 +9,7 @@ from adafruit_rgb_display import st7789
 
 i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
-accelerometer.range = Range.RANGE_4_G
+accelerometer.range = Range.RANGE_8_G
 
 global draw
 global backlight
@@ -77,7 +77,6 @@ def clearDisplay():
 def drawText(text,y):    
     draw.text((x,y),text,font=font,fill=("#FFFFFF"),align="left",)
     y += font.getbbox(text)[3]
-    print("displaying")
     disp.image(image, rotation)
     return y*2
 
@@ -91,7 +90,7 @@ def newLogfile():
     file.close()
     text = "Done!"
     y = drawText(text,y)
-    time.sleep(2)
+    time.sleep(0.5)
     y = clearDisplay()
 
 
@@ -111,7 +110,6 @@ buttonToggleBacklight.switch_to_input()
 
 
 start = time.monotonic()
-print(f'Start Time: {start}\n')
 while True:
 
     if not buttonToggleBacklight.value and Backlight.value == True:
@@ -134,7 +132,6 @@ while True:
     print(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
 
     with open(fileName, 'a') as file:
-        print("Writing to file")
         file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
 
     time.sleep(0.2)
