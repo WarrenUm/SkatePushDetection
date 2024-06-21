@@ -32,6 +32,7 @@ def setupDisplay():
     global top
     global bottom
     global x
+    global y
     global width
     global height
     global image
@@ -63,6 +64,7 @@ def setupDisplay():
     top = padding
     bottom = height - padding
     x = 0
+    y = top
     font = ImageFont.truetype("DejaVuSans.ttf", 24)
     backlight = digitalio.DigitalInOut(board.D22)
     backlight.switch_to_output()
@@ -70,17 +72,29 @@ def setupDisplay():
 
 setupDisplay()
 
-def showCreatingNewLog():
-    text = "Starting New Log"
+def clearDisplay():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     y = top
+
+def drawText(text):
+    y += font.getbbox(text)[3]
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
     draw.text((x, y), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
-    time.sleep(5)
+
+def newLogfile():
+    fileName = createLogFile()
+    drawText(f"New Log File: {fileName}")
+    drawText("Writing Header...")
+    file = open(fileName, 'a')
+    file.write('time,x,y,z\n')
+    file.close()
+    drawText("Done!")
+    time.sleep(2)
+    clearDisplay()
 
 
-
-print('creating file')
+print('Creating Initial File')
 fileName = createLogFile()
 file = open(fileName, 'a')
 file.write('time,x,y,z\n')
@@ -108,11 +122,8 @@ while True:
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
-        showCreatingNewLog()
-        fileName = createLogFile()
-        file = open(fileName, 'a')
-        file.write('time,x,y,z\n')
-        file.close()
+        newLogfile()
+        
 
 
     timestamp = time.monotonic()
