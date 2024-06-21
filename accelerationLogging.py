@@ -79,6 +79,7 @@ def drawText(textArray,y):
     for text in textArray:
         textString += f"{text}\\n"
     draw.multiline_text((x,y),textString,font=font,fill=(0,0,0))
+    disp.image(image, rotation)
     return y
 
 def newLogfile():
