@@ -88,6 +88,7 @@ def drawText(text,y):
     return y
 
 def newLogfile():
+    y = clearDisplay()
     fileName = createLogFile(fileCount)
     y = drawText(f"New Log File: {fileName}",y)
     y = drawText("Writing Header...",y)
