@@ -78,7 +78,9 @@ def drawText(textArray,y):
     textString = ""
     for text in textArray:
         textString += f"{text}\\n"
+        print(textString)
     draw.multiline_text((x,y),textString,font=font,fill=(0,0,0))
+    print("displaying image")
     disp.image(image, rotation)
     return y
 
