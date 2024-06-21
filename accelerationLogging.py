@@ -80,7 +80,6 @@ def clearDisplay():
 def drawText(textArray,y):
     for text in textArray:
         y += font.getbbox(text)[3]
-        draw.rectangle((0, 0, width, height), outline=0, fill=0)
         draw.text((x, y), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
     return y
@@ -93,6 +92,7 @@ def newLogfile():
     textToDraw += "Writing Header..."
     y = drawText(textToDraw,y)
     time.sleep(2)
+    y = clearDisplay()
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
