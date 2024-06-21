@@ -107,7 +107,7 @@ while True:
         time.sleep(0.5)
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
-        printrint("buttonA Pressed")
+        print("buttonA Pressed")
         showCreatingNewLog()
         fileName = createLogFile()
         file = open(fileName, 'a')
