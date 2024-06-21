@@ -78,9 +78,9 @@ def clearDisplay():
     y = top
 
 def drawText(text): 
-    y = y + font.getbbox(text)[3]
+    y1 = y + font.getbbox(text)[3]
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, y), text, font=font, fill="#FFFFFF")
+    draw.text((x, y1), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
 
 def newLogfile():
