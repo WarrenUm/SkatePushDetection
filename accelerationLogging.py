@@ -75,7 +75,7 @@ def clearDisplay():
     return y
 
 def drawText(text,y):    
-    draw.text((width/2,height/2),text,font=font,fill=("#FFFFFF"),align="center",)
+    draw.text((width/2,height/2),text,font=font,fill=("#FFFFFF"),align="left",)
     print("displaying")
     disp.image(image, rotation)
     return y
