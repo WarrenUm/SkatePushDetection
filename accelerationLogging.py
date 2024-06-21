@@ -76,7 +76,7 @@ def clearDisplay():
 
 def drawText(textArray,y):    
     textString = " ".join(textArray)
-    draw.multiline_text((x,y),textString,font=font,fill=("#FFFFFF"))
+    draw.multiline_text((x,y),textString,font=font,fill=("#FFFFFF"),align="center",)
     print("displaying")
     disp.image(image, rotation)
     return y
