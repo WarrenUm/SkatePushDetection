@@ -143,3 +143,5 @@ The Pi should pull code changes on reboot. If it does not, check the service sta
 #custom button function to start logging script
 #custom buttom function long press to safe shutdown
 #script to on boot git pull latest code from github
+
+pip3 install adafruit-circuitpython-gps

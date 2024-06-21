@@ -2,10 +2,18 @@ import time
 import os
 import board
 import digitalio
+import busio
+import adafruit_gps
 import adafruit_adxl34x
 from adafruit_adxl34x import Range
 from PIL import Image, ImageDraw, ImageFont
 from adafruit_rgb_display import st7789
+
+
+i2cgps = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
+gps = adafruit_gps.GPS_GtopI2C(i2cgps)
+gps.send_command(b'PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0')
+gps.send_command(b"PMTK220,1000")
 
 i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
@@ -122,6 +130,16 @@ while True:
         print("buttonA Pressed")
         newLogfile()
         
+    print(
+            "Fix timestamp: {}/{}/{} {:02}:{:02}:{:02}".format(
+                gps.timestamp_utc.tm_mon,  # Grab parts of the time from the
+                gps.timestamp_utc.tm_mday,  # struct_time object that holds
+                gps.timestamp_utc.tm_year,  # the fix time.  Note you might
+                gps.timestamp_utc.tm_hour,  # not get all data like year, day,
+                gps.timestamp_utc.tm_min,  # month!
+                gps.timestamp_utc.tm_sec,
+            )
+        )
 
 
     timestamp = time.monotonic()
