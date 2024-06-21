@@ -29,12 +29,9 @@ def createLogFile(fileCount):
     fileName = f'skateLog_{fileCount}.csv'
     logFileExists = os.path.isfile(fileName)
     while logFileExists:
-        print(f'file exists {fileCount}')
         fileCount+=1
         fileName = f'skateLog_{fileCount}.csv'
         logFileExists = os.path.isfile(fileName)
-    
-    print('returning filename')
     return fileName
 
 cs_pin = digitalio.DigitalInOut(board.CE0)
@@ -78,9 +75,10 @@ def clearDisplay():
     return y
 
 def drawText(textArray,y):
+    textString = ""
     for text in textArray:
-        draw.text((x, y), text, font=font, fill="#FFFFFF")
-        y += font.getbbox(text)[3]
+        textString += f"{text}\\n"
+    draw.multiline_text((10,10),textString,font=font,fill=(0,0,0))
     disp.image(image, rotation)
     return y
 
