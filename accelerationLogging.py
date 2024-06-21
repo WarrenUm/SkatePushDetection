@@ -90,7 +90,6 @@ def newLogfile():
     file.close()
     text = "Done!"
     y = drawText(text,y)
-    time.sleep(0.5)
     y = clearDisplay()
 
 
