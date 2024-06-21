@@ -77,8 +77,8 @@ def clearDisplay():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     y = top
 
-def drawText(text):
-    y += font.getbbox(text)[3]
+def drawText(text): 
+    y = y + font.getbbox(text)[3]
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     draw.text((x, y), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
