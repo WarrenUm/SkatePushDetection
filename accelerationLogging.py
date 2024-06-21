@@ -25,7 +25,7 @@ global image
 global rotation
 global fileCount
 
-fileCount = 1
+fileCount = 0
 def createLogFile(fileCount):
     fileName = f'skateLog_{fileCount}.csv'
     logFileExists = os.path.isfile(fileName)
@@ -87,7 +87,7 @@ def drawText(text):
     disp.image(image, rotation)
 
 def newLogfile():
-    fileName = createLogFile()
+    fileName = createLogFile(fileCount)
     drawText(f"New Log File: {fileName}")
     drawText("Writing Header...")
     file = open(fileName, 'a')
@@ -99,7 +99,7 @@ def newLogfile():
 
 
 print('Creating Initial File')
-fileName = createLogFile()
+fileName = createLogFile(fileCount)
 file = open(fileName, 'a')
 file.write('time,x,y,z\n')
 file.close()
