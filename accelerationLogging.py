@@ -75,8 +75,8 @@ def clearDisplay():
     return y
 
 def drawText(textArray,y):    
-    textString = " ".join(textArray)
-    draw.multiline_text((x,y),textString,font=font,fill=("#FFFFFF"),align="center",)
+    textString = "\n".join(textArray)
+    draw.text((width/2,height/2),textString,font=font,fill=("#FFFFFF"),align="center",)
     print("displaying")
     disp.image(image, rotation)
     return y
@@ -85,7 +85,7 @@ def newLogfile():
     y = clearDisplay()
     fileName = createLogFile(fileCount)
     textToDraw = []
-    textToDraw += f"New Log File: {fileName}"
+    textToDraw += f"New Log File:\n {fileName}"
     textToDraw += "Writing Header..."
     y = drawText(textToDraw,y)
     time.sleep(2)
