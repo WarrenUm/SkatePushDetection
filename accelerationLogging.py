@@ -18,7 +18,6 @@ global disp
 global top
 global bottom
 global x
-global y
 global width
 global height
 global image
@@ -79,23 +78,25 @@ def clearDisplay():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     disp.image(image, rotation)
     y = top
+    return y
 
-def drawText(text):
+def drawText(text,y):
     y += font.getbbox(text)[3]
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     draw.text((x, y), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
+    return y
 
 def newLogfile():
     fileName = createLogFile(fileCount)
-    drawText(f"New Log File: {fileName}")
-    drawText("Writing Header...")
+    y = drawText(f"New Log File: {fileName}",y)
+    y = drawText("Writing Header...",y)
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
-    drawText("Done!")
+    y = drawText("Done!",y)
     time.sleep(2)
-    clearDisplay()
+    y = clearDisplay()
 
 
 print('Creating Initial File')
