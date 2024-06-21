@@ -37,6 +37,7 @@ def setupDisplay():
     global height
     global image
     global rotation
+    global top
     cs_pin = digitalio.DigitalInOut(board.CE0)
     dc_pin = digitalio.DigitalInOut(board.D25)
     reset_pin = None
