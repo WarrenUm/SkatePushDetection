@@ -75,7 +75,8 @@ def clearDisplay():
     return y
 
 def drawText(text,y):    
-    draw.text((x,height/2),text,font=font,fill=("#FFFFFF"),align="left",)
+    draw.text((x,height/2+y),text,font=font,fill=("#FFFFFF"),align="left",)
+    y += font.getbbox(text)[3]
     print("displaying")
     disp.image(image, rotation)
     return y
@@ -83,10 +84,9 @@ def drawText(text,y):
 def newLogfile():
     y = clearDisplay()
     fileName = createLogFile(fileCount)
-    text = f"New Log File:\n {fileName}\nWriting Header...\n"
+    text = f"New Log File:\n {fileName}"
     y = drawText(text,y)
     time.sleep(2)
-    y = clearDisplay()
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
