@@ -92,6 +92,7 @@ def newLogfile():
     textToDraw += f"New Log File: {fileName}"
     textToDraw += "Writing Header..."
     y = drawText(textToDraw,y)
+    time.sleep(2)
     file = open(fileName, 'a')
     file.write('time,x,y,z\n')
     file.close()
