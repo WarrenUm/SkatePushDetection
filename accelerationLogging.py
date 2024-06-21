@@ -9,7 +9,7 @@ from adafruit_rgb_display import st7789
 
 i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
-accelerometer.range = Range.RANGE_8_G
+accelerometer.range = Range.RANGE_16_G
 
 global draw
 global backlight
