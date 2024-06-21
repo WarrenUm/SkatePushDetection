@@ -34,6 +34,8 @@ def setupDisplay():
     global x
     global width
     global height
+    global image
+    global rotation
     cs_pin = digitalio.DigitalInOut(board.CE0)
     dc_pin = digitalio.DigitalInOut(board.D25)
     reset_pin = None
@@ -73,6 +75,7 @@ def showCreatingNewLog():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     y = top
     draw.text((x, y), text, font=font, fill="#FFFFFF")
+    disp.image(image, rotation)
     time.sleep(5)
 
 
@@ -104,6 +107,7 @@ while True:
         time.sleep(0.5)
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
+        printrint("buttonA Pressed")
         showCreatingNewLog()
         fileName = createLogFile()
         file = open(fileName, 'a')
