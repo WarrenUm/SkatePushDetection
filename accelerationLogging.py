@@ -79,7 +79,7 @@ def drawText(text,y):
     y += font.getbbox(text)[3]
     print("displaying")
     disp.image(image, rotation)
-    return y
+    return y*2
 
 def newLogfile():
     y = clearDisplay()
