@@ -79,8 +79,8 @@ def clearDisplay():
 
 def drawText(textArray,y):
     for text in textArray:
-        y += font.getbbox(text)[3]
         draw.text((x, y), text, font=font, fill="#FFFFFF")
+        y += font.getbbox(text)[3]
     disp.image(image, rotation)
     return y
 
