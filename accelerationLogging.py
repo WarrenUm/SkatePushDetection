@@ -11,8 +11,22 @@ i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
 accelerometer.range = Range.RANGE_4_G
 
-fileCount=0
-def createLogFile(fileCount=0):
+global draw
+global backlight
+global font
+global disp
+global top
+global bottom
+global x
+global y
+global width
+global height
+global image
+global rotation
+global fileCount
+
+fileCount = 1
+def createLogFile(fileCount):
     fileName = f'skateLog_{fileCount}.csv'
     logFileExists = os.path.isfile(fileName)
     while logFileExists:
@@ -25,19 +39,7 @@ def createLogFile(fileCount=0):
     return fileName
 
 def setupDisplay():
-    global draw
-    global backlight
-    global font
-    global disp
-    global top
-    global bottom
-    global x
-    global y
-    global width
-    global height
-    global image
-    global rotation
-    global top
+    
     cs_pin = digitalio.DigitalInOut(board.CE0)
     dc_pin = digitalio.DigitalInOut(board.D25)
     reset_pin = None
@@ -75,12 +77,13 @@ setupDisplay()
 
 def clearDisplay():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    disp.image(image, rotation)
     y = top
 
-def drawText(text): 
-    y1 = y + font.getbbox(text)[3]
+def drawText(text):
+    y += font.getbbox(text)[3]
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, y1), text, font=font, fill="#FFFFFF")
+    draw.text((x, y), text, font=font, fill="#FFFFFF")
     disp.image(image, rotation)
 
 def newLogfile():
