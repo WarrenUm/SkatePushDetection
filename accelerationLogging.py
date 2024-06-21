@@ -74,11 +74,8 @@ def clearDisplay():
     y = top
     return y
 
-def drawText(textArray,y):
-    textString = ""
-    for text in textArray:
-        textString += f"{text}\\n"
-        print(textString)
+def drawText(textArray,y):    
+    textString = "\\n".join(textArray)
     draw.multiline_text((x,y),textString,font=font,fill=("#FFFFFF"))
     print("displaying")
     disp.image(image, rotation)
@@ -97,6 +94,7 @@ def newLogfile():
     file.write('time,x,y,z\n')
     file.close()
     textToDraw = []
+    textToDraw += "Done!"
     y = drawText(textToDraw,y)
     time.sleep(2)
     y = clearDisplay()
