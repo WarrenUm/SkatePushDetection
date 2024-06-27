@@ -6,7 +6,7 @@ import adafruit_gps
 
 i2cgps = board.I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 gps = adafruit_gps.GPS_GtopI2C(i2cgps)
-gps.send_command(b'PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0')
+gps.send_command(b'PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0')
 gps.send_command(b"PMTK220,1000")
 
 while True:
