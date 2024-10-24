@@ -136,7 +136,23 @@ Check the status of the service with:
 
 The Pi should pull code changes on reboot. If it does not, check the service status for log messages.
 
+Make a new script file to start the logging script when the pi boots:
+```cd  ~/SkatePushDetection
+source ./.env/bin/activate
+python accelerationLogging.py```
 
+Add a new service file to start this script too:
+```[Unit]
+Description=autoruns logging script
+After=multi-user.target
+[Service]
+Type=oneshot
+User=skate
+ExecStart=/usr/bin/bash /home/skate/scripts/startLog
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target```
 
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
