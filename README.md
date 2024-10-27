@@ -154,6 +154,8 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target```
 
+```sudo systemctl enable startLog```
+
 
 #secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
 #custom button function to start logging script
