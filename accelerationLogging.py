@@ -14,6 +14,10 @@ i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
 accelerometer.range = Range.RANGE_16_G
 
+gps = adafruit_gps.GPS_GtopI2C(i2c, debug=False)
+gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
+gps.send_command(b"PMTK220,200")
+
 global draw
 global backlight
 global font
@@ -126,14 +130,22 @@ while True:
         newLogfile()
 
     timestamp = time.monotonic()
+    if gps.update():
+        gpsQuality = gps.fix_quality
+        gpsTime = gps.timestamp_utc
+        gpsAltitude = gps.altitude_m
+        gpsMPH = gps.speed_knots * 1.150779
+        gpsLat = gps.latitude
+        gpsLong = gps.longitude
+
     accelerationX = accelerometer.acceleration[0]
     accelerationY = accelerometer.acceleration[1]
     accelerationZ = accelerometer.acceleration[2]
     print(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
 
     with open(fileName, 'a') as file:
-        file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
+        file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
 
-    time.sleep(0.2)
+    time.sleep(0.15)
 
  
