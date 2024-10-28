@@ -157,7 +157,7 @@ WantedBy=multi-user.target```
 ```sudo systemctl enable startLog```
 
 
-#secure copy from pi scp skate@<ip>:~/skate/skateLog_0.csv .
+#secure copy from pi scp skate@<ip>:~/SkatePushDetection/skateLog_0.csv .
 #custom button function to start logging script
 #custom buttom function long press to safe shutdown
 #script to on boot git pull latest code from github

@@ -93,7 +93,7 @@ def newLogfile():
     text = f"New Log File:\n {fileName}"
     y = drawText(text,y)
     file = open(fileName, 'a')
-    file.write('time,x,y,z\n')
+    file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
     file.close()
     text = "Done!"
     y = drawText(text,y)
