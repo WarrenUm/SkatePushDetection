@@ -106,7 +106,7 @@ def newLogfile():
 print('Creating Initial File')
 fileName = createLogFile(fileCount)
 file = open(fileName, 'a')
-file.write('time,x,y,z\n')
+file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
 file.close()
 
 Backlight = digitalio.DigitalInOut(board.D22)
