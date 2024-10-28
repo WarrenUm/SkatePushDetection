@@ -140,6 +140,13 @@ while True:
         gpsMPH = float(gps.speed_knots) * 1.150779
         gpsLat = gps.latitude
         gpsLong = gps.longitude
+    else:
+        gpsQuality = None
+        gpsTime = None
+        gpsAltitude = None
+        gpsMPH = None
+        gpsLat = None
+        gpsLong = None
 
     accelerationX = accelerometer.acceleration[0]
     accelerationY = accelerometer.acceleration[1]
