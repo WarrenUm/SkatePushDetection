@@ -97,6 +97,9 @@ def newLogfile():
     file.close()
     text = "Done!"
     y = drawText(text,y)
+    if gps.has_fix:
+        text = "GPS Acquired :)"
+        y = drawText
     y = clearDisplay()
 
 
@@ -134,7 +137,7 @@ while True:
         gpsQuality = gps.fix_quality
         gpsTime = gps.timestamp_utc
         gpsAltitude = gps.altitude_m
-        gpsMPH = gps.speed_knots * 1.150779
+        gpsMPH = float(gps.speed_knots) * 1.150779
         gpsLat = gps.latitude
         gpsLong = gps.longitude
 
