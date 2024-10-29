@@ -8,6 +8,7 @@ import adafruit_adxl34x
 from adafruit_adxl34x import Range
 from PIL import Image, ImageDraw, ImageFont
 from adafruit_rgb_display import st7789
+import threading
 
 
 i2c = board.I2C()
@@ -117,10 +118,7 @@ buttonToggleBacklight = digitalio.DigitalInOut(board.D24)
 buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
-
-start = time.monotonic()
-while True:
-
+def detectInput():
     if not buttonToggleBacklight.value and Backlight.value == True:
         Backlight.value = False  # turn off backlight
         time.sleep(0.1)
@@ -131,6 +129,12 @@ while True:
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
         newLogfile()
+
+thr = threading.Thread(target=detectInput)
+thr.start()
+
+start = time.monotonic()
+while True:
 
     timestamp = time.monotonic()
     if gps.update():
