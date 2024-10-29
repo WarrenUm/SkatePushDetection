@@ -119,9 +119,10 @@ buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
 def logData(gps,accelerometer,time,fileName):
+    global stopLog
     while True:
         if stopLog:
-            return
+            break
         timestamp = time.monotonic()
         if gps.update():
             gpsQuality = gps.fix_quality
@@ -146,7 +147,6 @@ def logData(gps,accelerometer,time,fileName):
 
 start = time.monotonic()
 thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
-stopLog = False
 thr.start()
 while True:
 
