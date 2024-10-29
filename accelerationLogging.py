@@ -122,12 +122,12 @@ def logData(gps,accelerometer,time,fileName):
     while True:
         timestamp = time.monotonic()
         if gps.update():
-                gpsQuality = gps.fix_quality
-                gpsTime = gps.timestamp_utc
-                gpsAltitude = gps.altitude_m
-                gpsMPH = gps.speed_knots
-                gpsLat = gps.latitude
-                gpsLong = gps.longitude
+            gpsQuality = gps.fix_quality
+            gpsTime = gps.timestamp_utc
+            gpsAltitude = gps.altitude_m
+            gpsMPH = gps.speed_knots
+            gpsLat = gps.latitude
+            gpsLong = gps.longitude
         else:
             gpsQuality = None
             gpsTime = None
