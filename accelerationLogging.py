@@ -157,6 +157,8 @@ while True:
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
         newLogfile()
+        thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
+        thr.start()
 
     time.sleep(0.15)
 
