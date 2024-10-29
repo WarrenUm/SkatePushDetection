@@ -119,35 +119,34 @@ buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
 def logData(gps,accelerometer,time,fileName):
-    timestamp = time.monotonic()
-    if gps.update():
-        gpsQuality = gps.fix_quality
-        gpsTime = gps.timestamp_utc
-        gpsAltitude = gps.altitude_m
-        gpsMPH = gps.speed_knots * 1.150779
-        gpsLat = gps.latitude
-        gpsLong = gps.longitude
-    else:
-        gpsQuality = None
-        gpsTime = None
-        gpsAltitude = None
-        gpsMPH = None
-        gpsLat = None
-        gpsLong = None
-
-    accelerationX = accelerometer.acceleration[0]
-    accelerationY = accelerometer.acceleration[1]
-    accelerationZ = accelerometer.acceleration[2]
-
-    with open(fileName, 'a') as file:
-        file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
+    while True:
+        timestamp = time.monotonic()
+        if gps.update():
+                gpsQuality = gps.fix_quality
+                gpsTime = gps.timestamp_utc
+                gpsAltitude = gps.altitude_m
+                gpsMPH = gps.speed_knots
+                gpsLat = gps.latitude
+                gpsLong = gps.longitude
+        else:
+            gpsQuality = None
+            gpsTime = None
+            gpsAltitude = None
+            gpsMPH = None
+            gpsLat = None
+            gpsLong = None
+        accelerationX = accelerometer.acceleration[0]
+        accelerationY = accelerometer.acceleration[1]
+        accelerationZ = accelerometer.acceleration[2]
+        with open(fileName, 'a') as file:
+            file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
 
 
 start = time.monotonic()
 thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
+thr.start()
 while True:
 
-    thr.start()
     if not buttonToggleBacklight.value and Backlight.value == True:
         Backlight.value = False  # turn off backlight
         time.sleep(0.1)
@@ -158,7 +157,6 @@ while True:
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
         newLogfile()
-        thr.run()
 
     time.sleep(0.15)
 
