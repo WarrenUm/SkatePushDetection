@@ -120,6 +120,8 @@ buttonToggleBacklight.switch_to_input()
 
 def logData(gps,accelerometer,time,fileName):
     while True:
+        if stopLog:
+            return
         timestamp = time.monotonic()
         if gps.update():
             gpsQuality = gps.fix_quality
@@ -144,6 +146,7 @@ def logData(gps,accelerometer,time,fileName):
 
 start = time.monotonic()
 thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
+stopLog = False
 thr.start()
 while True:
 
@@ -156,6 +159,8 @@ while True:
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("buttonA Pressed")
+        stopLog = True
+        thr.join()
         newLogfile()
         thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
         thr.start()
