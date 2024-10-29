@@ -118,30 +118,13 @@ buttonToggleBacklight = digitalio.DigitalInOut(board.D24)
 buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
-def detectInput():
-    if not buttonToggleBacklight.value and Backlight.value == True:
-        Backlight.value = False  # turn off backlight
-        time.sleep(0.1)
-    elif not buttonToggleBacklight.value and Backlight.value == False:
-        Backlight.value = True  # turn on backlight
-        time.sleep(0.1)
-
-    if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
-        print("buttonA Pressed")
-        newLogfile()
-
-thr = threading.Thread(target=detectInput)
-thr.start()
-
-start = time.monotonic()
-while True:
-
+def logData(gps,accelerometer,time,fileName):
     timestamp = time.monotonic()
     if gps.update():
         gpsQuality = gps.fix_quality
         gpsTime = gps.timestamp_utc
         gpsAltitude = gps.altitude_m
-        gpsMPH = float(gps.speed_knots) * 1.150779
+        gpsMPH = gps.speed_knots * 1.150779
         gpsLat = gps.latitude
         gpsLong = gps.longitude
     else:
@@ -155,10 +138,27 @@ while True:
     accelerationX = accelerometer.acceleration[0]
     accelerationY = accelerometer.acceleration[1]
     accelerationZ = accelerometer.acceleration[2]
-    print(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
 
     with open(fileName, 'a') as file:
         file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
+
+
+start = time.monotonic()
+thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
+while True:
+
+    thr.start()
+    if not buttonToggleBacklight.value and Backlight.value == True:
+        Backlight.value = False  # turn off backlight
+        time.sleep(0.1)
+    elif not buttonToggleBacklight.value and Backlight.value == False:
+        Backlight.value = True  # turn on backlight
+        time.sleep(0.1)
+
+    if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
+        print("buttonA Pressed")
+        newLogfile()
+        thr.run()
 
     time.sleep(0.15)
 
