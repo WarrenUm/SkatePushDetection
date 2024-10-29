@@ -102,6 +102,7 @@ def newLogfile():
         text = "GPS Acquired :)"
         y = drawText
     y = clearDisplay()
+    return fileName
 
 
 print('Creating Initial File')
@@ -161,7 +162,7 @@ while True:
         print("buttonA Pressed")
         stopLog = True
         thr.join()
-        newLogfile()
+        fileName = newLogfile()
         thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
         thr.start()
 
