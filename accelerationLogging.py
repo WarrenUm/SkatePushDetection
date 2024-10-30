@@ -90,7 +90,7 @@ def startScreen():
     time.sleep(5)
     y = clearDisplay()
     
-startScreenThread = threading.Thread(target=startScreen,daemon=True)
+startScreenThread = threading.Thread(target=startScreen)
 startScreenThread.start()
 
 
@@ -159,10 +159,11 @@ while True:
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
         print("Button A Pressed")
-        print("Killing logData thread")
-        logger.kill()
-        thr.join()
-        print("Thread Joined")
+        if logger:
+            print("Killing logData thread")
+            logger.kill()
+            thr.join()
+            print("Thread Joined")
         print("Creating new DataLogger")
         logger = DataLogger(gps,accelerometer)
         print("Creating new thread")
