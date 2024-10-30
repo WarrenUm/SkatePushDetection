@@ -147,7 +147,7 @@ class DataLogger:
             with open(self._fileName, 'a') as file:
                 file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
 
-
+logger = False
 while True:
 
     if not buttonToggleBacklight.value and Backlight.value == True:
