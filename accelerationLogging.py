@@ -86,7 +86,7 @@ def startScreen():
     y = drawText(text,y)
     if gps.has_fix:
         text = "GPS Acquired :)"
-        y = drawText
+        y = drawText(text,y)
     time.sleep(5)
     y = clearDisplay()
     
@@ -116,10 +116,20 @@ class DataLogger:
             fileName = f'skateLog_{fileCount}.csv'
             logFileExists = os.path.isfile(fileName)
         self._fileName = fileName
+        self.displayScreen(self,fileName)
         print('Creating Log File')
         file = open(self._fileName, 'a')
         file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
         file.close()
+
+    def displayScreen(self,text):
+        y = clearDisplay()
+        y = drawText(text,y)
+        if gps.has_fix:
+            text = "GPS Acquired :)"
+            y = drawText(text,y)
+        time.sleep(5)
+        y = clearDisplay()
 
     def kill(self):
         self._running = False
