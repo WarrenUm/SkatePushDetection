@@ -122,7 +122,7 @@ class DataLogger:
         file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
         file.close()
 
-    def displayScreen(text):
+    def displayScreen(self,text):
         y = clearDisplay()
         y = drawText(text,y)
         if gps.has_fix:
