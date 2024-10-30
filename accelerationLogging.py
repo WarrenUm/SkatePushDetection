@@ -32,15 +32,7 @@ global image
 global rotation
 global fileCount
 
-fileCount = 0
-def createLogFile(fileCount):
-    fileName = f'skateLog_{fileCount}.csv'
-    logFileExists = os.path.isfile(fileName)
-    while logFileExists:
-        fileCount+=1
-        fileName = f'skateLog_{fileCount}.csv'
-        logFileExists = os.path.isfile(fileName)
-    return fileName
+
 
 cs_pin = digitalio.DigitalInOut(board.CE0)
 dc_pin = digitalio.DigitalInOut(board.D25)
@@ -88,28 +80,19 @@ def drawText(text,y):
     disp.image(image, rotation)
     return y*2
 
-def newLogfile():
+def startScreen():
     y = clearDisplay()
-    fileName = createLogFile(fileCount)
-    text = f"New Log File:\n {fileName}"
-    y = drawText(text,y)
-    file = open(fileName, 'a')
-    file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
-    file.close()
-    text = "Done!"
+    text = 'Go Skate!!\n'
     y = drawText(text,y)
     if gps.has_fix:
         text = "GPS Acquired :)"
         y = drawText
+    time.sleep(5)
     y = clearDisplay()
-    return fileName
+    
+startScreenThread = threading.Thread(target=startScreen,daemon=True)
+startScreenThread.start()
 
-
-print('Creating Initial File')
-fileName = createLogFile(fileCount)
-file = open(fileName, 'a')
-file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
-file.close()
 
 Backlight = digitalio.DigitalInOut(board.D22)
 Backlight.switch_to_output()
@@ -119,36 +102,52 @@ buttonToggleBacklight = digitalio.DigitalInOut(board.D24)
 buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
-def logData(gps,accelerometer,time,fileName):
-    global stopLog
-    while True:
-        if stopLog:
-            break
-        timestamp = time.monotonic()
-        if gps.update():
-            gpsQuality = gps.fix_quality
-            gpsTime = gps.timestamp_utc
-            gpsAltitude = gps.altitude_m
-            gpsMPH = gps.speed_knots
-            gpsLat = gps.latitude
-            gpsLong = gps.longitude
-        else:
-            gpsQuality = None
-            gpsTime = None
-            gpsAltitude = None
-            gpsMPH = None
-            gpsLat = None
-            gpsLong = None
-        accelerationX = accelerometer.acceleration[0]
-        accelerationY = accelerometer.acceleration[1]
-        accelerationZ = accelerometer.acceleration[2]
-        with open(fileName, 'a') as file:
-            file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
+class DataLogger:
+    def __init__(self,gps,acc):
+        self._running = True
+        self._gps = gps
+        self._acc = acc
+
+        fileCount = 0
+        fileName = f'skateLog_{fileCount}.csv'
+        logFileExists = os.path.isfile(fileName)
+        while logFileExists:
+            fileCount+=1
+            fileName = f'skateLog_{fileCount}.csv'
+            logFileExists = os.path.isfile(fileName)
+        self._fileName = fileName
+        print('Creating Log File')
+        file = open(self._fileName, 'a')
+        file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
+        file.close()
+
+    def kill(self):
+        self._running = False
+        
+    def logData(self):
+        while self._running:
+            timestamp = time.monotonic()
+            if self._gps.update():
+                gpsQuality = self._gps.fix_quality
+                gpsTime = self._gps.timestamp_utc
+                gpsAltitude = self._gps.altitude_m
+                gpsMPH = self._gps.speed_knots
+                gpsLat = self._gps.latitude
+                gpsLong = self._gps.longitude
+            else:
+                gpsQuality = None
+                gpsTime = None
+                gpsAltitude = None
+                gpsMPH = None
+                gpsLat = None
+                gpsLong = None
+            accelerationX = self._acc.acceleration[0]
+            accelerationY = self._acc.acceleration[1]
+            accelerationZ = self._acc.acceleration[2]
+            with open(self._fileName, 'a') as file:
+                file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
 
 
-start = time.monotonic()
-thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
-thr.start()
 while True:
 
     if not buttonToggleBacklight.value and Backlight.value == True:
@@ -159,11 +158,16 @@ while True:
         time.sleep(0.1)
 
     if buttonToggleBacklight and not buttonStartNewLog.value:  # just button A pressed
-        print("buttonA Pressed")
-        stopLog = True
+        print("Button A Pressed")
+        print("Killing logData thread")
+        logger.kill()
         thr.join()
-        fileName = newLogfile()
-        thr = threading.Thread(target=logData, args=(gps,accelerometer,time,fileName))
+        print("Thread Joined")
+        print("Creating new DataLogger")
+        logger = DataLogger(gps,accelerometer)
+        print("Creating new thread")
+        thr = threading.Thread(target=logger.logData)
+        print("Starting thread")
         thr.start()
 
     time.sleep(0.15)
