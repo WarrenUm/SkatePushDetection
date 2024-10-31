@@ -2,8 +2,6 @@ import time
 import os
 import board
 import digitalio
-import busio
-import adafruit_gps
 import adafruit_adxl34x
 from adafruit_adxl34x import Range
 from PIL import Image, ImageDraw, ImageFont
@@ -15,9 +13,7 @@ i2c = board.I2C()
 accelerometer = adafruit_adxl34x.ADXL345(i2c)
 accelerometer.range = Range.RANGE_16_G
 
-gps = adafruit_gps.GPS_GtopI2C(i2c, debug=False)
-gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
-gps.send_command(b"PMTK220,200")
+
 
 global draw
 global backlight
@@ -84,9 +80,6 @@ def startScreen():
     y = clearDisplay()
     text = 'Go Skate!!\n'
     y = drawText(text,y)
-    if gps.has_fix:
-        text = "GPS Acquired :)"
-        y = drawText(text,y)
     time.sleep(5)
     y = clearDisplay()
     
@@ -103,9 +96,8 @@ buttonStartNewLog.switch_to_input()
 buttonToggleBacklight.switch_to_input()
 
 class DataLogger:
-    def __init__(self,gps,acc):
+    def __init__(self,acc):
         self._running = True
-        self._gps = gps
         self._acc = acc
 
         fileCount = 0
@@ -119,15 +111,12 @@ class DataLogger:
         self.displayScreen(self._fileName)
         print('Creating Log File')
         file = open(self._fileName, 'a')
-        file.write('time,x,y,z,gpsQuality,gpsTime,gpsAltitude,gpsMPH,gpsLat,gpsLong\n')
+        file.write('time,x,y,z\n')
         file.close()
 
     def displayScreen(self,text):
         y = clearDisplay()
         y = drawText(text,y)
-        if gps.has_fix:
-            text = "GPS Acquired :)"
-            y = drawText(text,y)
         time.sleep(5)
         y = clearDisplay()
 
@@ -137,25 +126,11 @@ class DataLogger:
     def logData(self):
         while self._running:
             timestamp = time.monotonic()
-            if self._gps.update():
-                gpsQuality = self._gps.fix_quality
-                gpsTime = self._gps.timestamp_utc
-                gpsAltitude = self._gps.altitude_m
-                gpsMPH = self._gps.speed_knots
-                gpsLat = self._gps.latitude
-                gpsLong = self._gps.longitude
-            else:
-                gpsQuality = None
-                gpsTime = None
-                gpsAltitude = None
-                gpsMPH = None
-                gpsLat = None
-                gpsLong = None
             accelerationX = self._acc.acceleration[0]
             accelerationY = self._acc.acceleration[1]
             accelerationZ = self._acc.acceleration[2]
             with open(self._fileName, 'a') as file:
-                file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ},{gpsQuality},{gpsTime},{gpsAltitude},{gpsMPH},{gpsLat},{gpsLong}\n')
+                file.write(f'{timestamp},{accelerationX},{accelerationY},{accelerationZ}\n')
 
 logger = False
 while True:
@@ -175,7 +150,7 @@ while True:
             thr.join()
             print("Thread Joined")
         print("Creating new DataLogger")
-        logger = DataLogger(gps,accelerometer)
+        logger = DataLogger(accelerometer)
         print("Creating new thread")
         thr = threading.Thread(target=logger.logData)
         print("Starting thread")
